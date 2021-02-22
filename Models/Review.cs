@@ -10,7 +10,6 @@ namespace GOVAPI.Models
         public int ID { get; set; }
         public int UserID { get; set; }
         public User User { get; set; } // foreign key  this points to the user but is not used
-
         //Review.User.Username
         public int ProductID { get; set; }
         public Product Product { get; set; } // foreign key  this points to the product but is not used
