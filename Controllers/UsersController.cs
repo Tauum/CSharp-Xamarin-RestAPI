@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,56 +24,59 @@ namespace GOVAPI.Controllers
             _context = context;
         }
 
-        // POST: api/Login
-        [Route("LogIn")]
-        [HttpPost]
-        public async Task<ActionResult<Guid>> LogIn(string email, string password) //this generates a GUID if user login is correct
-        {
-            User user = this._context.User.FirstOrDefault<User>(user => user.Email.ToLower().Equals(email));
-            if (user is null) { return Unauthorized(Guid.Empty); }
-            if (Security.VerifyHash(password, user.Password)) { return Ok(Guid.NewGuid());}
-            return Unauthorized(Guid.Empty);
-        }
+        //// POST: api/Login
+        //[Route("LogIn")]
+        //[HttpPost]
+        //public async Task<ActionResult<Guid>> LogIn(string email, string password) // this generates a GUID if user login is correct
+        //{
+        //    User user = this._context.User.FirstOrDefault<User>(user => user.Email.ToLower().Equals(email));
+        //    if (user is null) { return Unauthorized(Guid.Empty); }
+        //    if (Security.VerifyHash(password, user.Password)) { return Ok(Guid.NewGuid());}
+        //    return Unauthorized(Guid.Empty);
+        //}
 
         // GET: api/Users
-        [Route("GetUsers")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers(string searchExpression = null) //this doesnt work
-        {
-            Expression<Func<User, bool>> lambdaExpression = null;
-            if (!string.IsNullOrWhiteSpace(searchExpression))
-            {
-                lambdaExpression = DynamicExpressionParser.ParseLambda<User, bool>(new ParsingConfig(), true, searchExpression);
-            }
-            var queryableUser = this._context.User.AsQueryable();
-            if (lambdaExpression != null)
-            {
-                queryableUser = queryableUser.Where(lambdaExpression);
-            }
-            return await queryableUser.ToListAsync();
-        }
+          [Route("GetUsers")]
+          [HttpGet]
+          public async Task<ActionResult<IEnumerable<User>>> GetUsers(string searchExpression = null) //this doesnt work
+          {
+              Expression<Func<User, bool>> lambdaExpression = null;
+              if (!string.IsNullOrWhiteSpace(searchExpression))
+              {
+                  lambdaExpression = DynamicExpressionParser.ParseLambda<User, bool>(new ParsingConfig(), true, searchExpression);
+              }
+              var queryableUser = this._context.User.AsQueryable();
+              if (lambdaExpression != null)
+              {
+                  queryableUser = queryableUser.Where(lambdaExpression);
+              }
+              var list = await queryableUser.ToListAsync();
+              return list;
+          } 
+        
 
-        public class Rev {
-            public string Username {get;set;}
-            public int ProductID {get;set;}
-            public string Description {get;set;}
-        }
 
-        [Route("GetReviews")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rev>>> GetRevs() {
-            return Ok(this._context.User
-                .Join(
-                    this._context.Review,
-                    user2 => user2.ID,
-                    review => review.UserID,
-                    (user2, review) => new Rev{
-                        Username = user2.Username,
-                        ProductID = review.ProductID,
-                        Description = review.Description
-                    }
-                ).ToList());
-        }
+        //public class Rev {
+        //    public string Username {get;set;}
+        //    public int ProductID {get;set;}
+        //    public string Description {get;set;}
+        //}
+
+        //[Route("GetReviews")]
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Rev>>> GetRevs() {
+        //    return Ok(this._context.User
+        //        .Join(
+        //            this._context.Review,
+        //            user2 => user2.ID,
+        //            review => review.UserID,
+        //            (user2, review) => new Rev{
+        //                Username = user2.Username,
+        //                ProductID = review.ProductID,
+        //                Description = review.Description
+        //            }
+        //        ).ToList());
+        //}
 
         // GET: api/Users/5
         [HttpGet("{id}")]
