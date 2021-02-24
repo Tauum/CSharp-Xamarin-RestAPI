@@ -36,7 +36,6 @@ namespace GOVAPI.Controllers
         //}
 
         // GET: api/Users
-          [Route("GetUsers")]
           [HttpGet]
           public async Task<ActionResult<IEnumerable<User>>> GetUsers(string searchExpression = null) //this doesnt work
           {
