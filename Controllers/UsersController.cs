@@ -93,7 +93,7 @@ namespace GOVAPI.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("PutUser{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.ID)
@@ -124,7 +124,6 @@ namespace GOVAPI.Controllers
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Route("PostUser")]
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
