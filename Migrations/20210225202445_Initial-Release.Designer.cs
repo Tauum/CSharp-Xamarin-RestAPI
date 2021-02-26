@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GOVAPI.Migrations
 {
     [DbContext(typeof(GOVAPIContext))]
-    [Migration("20210223184744_initial-create")]
-    partial class initialcreate
+    [Migration("20210225202445_Initial-Release")]
+    partial class InitialRelease
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
