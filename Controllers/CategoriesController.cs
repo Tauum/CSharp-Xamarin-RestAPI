@@ -45,7 +45,7 @@ namespace GOVAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
-            if (id != category.Id) { return BadRequest(); }
+            if (id != category.ID) { return BadRequest(); }
 
             _context.Entry(category).State = EntityState.Modified;
 
@@ -66,7 +66,7 @@ namespace GOVAPI.Controllers
         {
             _context.Category.Add(category);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return CreatedAtAction("GetCategory", new { id = category.ID }, category);
         }
 
         // DELETE: api/Categories/5
@@ -82,6 +82,6 @@ namespace GOVAPI.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(int id){  return _context.Category.Any(e => e.Id == id); }
+        private bool CategoryExists(int id){  return _context.Category.Any(e => e.ID == id); }
     }
 }

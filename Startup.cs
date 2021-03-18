@@ -27,26 +27,14 @@ namespace GOVAPI
 
         public IConfiguration Configuration { get; }
 
-        //add services to container
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services) //add services to container
         {
-            services.AddControllers()
-                .AddNewtonsoftJson(x =>
-                {
-                    x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GOVAPI", Version = "v1" });
-            });
-
-            services.AddDbContext<GOVAPIContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("GOVAPIContext")));
+            services.AddControllers().AddNewtonsoftJson(x => { x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "GOVAPI", Version = "v1" }); });
+            services.AddDbContext<GOVAPIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GOVAPIContext")));
         }
-        
-        //configure HTTP request pipeline
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) //configure HTTP request pipeline
         {
             if (env.IsDevelopment())
             {
@@ -56,11 +44,8 @@ namespace GOVAPI
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
