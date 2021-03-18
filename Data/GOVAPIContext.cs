@@ -21,5 +21,7 @@ namespace GOVAPI.Data
         public DbSet<GOVAPI.Models.User> User { get; set; }
 
         public DbSet<GOVAPI.Models.Image> Image { get; set; }
+
+        public DbSet<GOVAPI.Models.Category> Category { get; set; }
     }
 }

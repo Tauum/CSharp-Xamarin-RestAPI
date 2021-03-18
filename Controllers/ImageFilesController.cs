@@ -18,10 +18,7 @@ namespace GOVAPI.Controllers
     {
         private readonly GOVAPIContext _context;
 
-        public ImagesController(GOVAPIContext context)
-        {
-            _context = context;
-        }
+        public ImagesController(GOVAPIContext context) {  _context = context; }
 
         // GET: api/Images
         [HttpGet]
@@ -33,10 +30,7 @@ namespace GOVAPI.Controllers
                 lambdaExpression = DynamicExpressionParser.ParseLambda<Image, bool>(new ParsingConfig(), true, searchExpression);
             }
             var queryableImages = this._context.Image.AsQueryable();
-            if (lambdaExpression != null)
-            {
-                queryableImages = queryableImages.Where(lambdaExpression);
-            }
+            if (lambdaExpression != null) { queryableImages = queryableImages.Where(lambdaExpression); }
             return await queryableImages.ToListAsync();
         }
 
@@ -47,10 +41,7 @@ namespace GOVAPI.Controllers
         {
             var Image = await _context.Image.FindAsync(id);
 
-            if (Image == null)
-            {
-                return NotFound();
-            }
+            if (Image == null) { return NotFound(); }
 
             return Image;
         }
@@ -60,27 +51,15 @@ namespace GOVAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutImage(int id, Image Image)
         {
-            if (id != Image.ID)
-            {
-                return BadRequest();
-            }
+            if (id != Image.ID) { return BadRequest(); }
 
             _context.Entry(Image).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
+            try { await _context.SaveChangesAsync();}
             catch (DbUpdateConcurrencyException)
             {
-                if (!ImageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!ImageExists(id)) { return NotFound();}
+                else { throw; }
             }
 
             return NoContent();
@@ -101,10 +80,7 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> DeleteImage(int id)
         {
             var Image = await _context.Image.FindAsync(id);
-            if (Image == null)
-            {
-                return NotFound();
-            }
+            if (Image == null) { return NotFound(); }
 
             _context.Image.Remove(Image);
             await _context.SaveChangesAsync();
@@ -112,9 +88,6 @@ namespace GOVAPI.Controllers
             return NoContent();
         }
 
-        private bool ImageExists(int id)
-        {
-            return _context.Image.Any(e => e.ID == id);
-        }
+        private bool ImageExists(int id) { return _context.Image.Any(e => e.ID == id); }
     }
 }

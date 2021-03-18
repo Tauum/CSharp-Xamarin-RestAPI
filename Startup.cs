@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +12,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GOVAPI.Data;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace GOVAPI
 {
@@ -25,21 +27,25 @@ namespace GOVAPI
 
         public IConfiguration Configuration { get; }
 
-        // This called by runtime. add services to the container.
+        //add services to container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers()
+                .AddNewtonsoftJson(x =>
+                {
+                    x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
 
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GOVAPI", Version = "v1" });
             });
 
             services.AddDbContext<GOVAPIContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("GOVAPIContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("GOVAPIContext")));
         }
-
-        // This called by runtime. configure HTTP request pipeline.
+        
+        //configure HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -55,10 +61,7 @@ namespace GOVAPI
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

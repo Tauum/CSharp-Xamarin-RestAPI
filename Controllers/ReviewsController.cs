@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GOVAPI.Data;
 using GOVAPI.Models;
-using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
 
 namespace GOVAPI.Controllers
 {
@@ -18,10 +18,7 @@ namespace GOVAPI.Controllers
     {
         private readonly GOVAPIContext _context;
 
-        public ReviewsController(GOVAPIContext context)
-        {
-            _context = context;
-        }
+        public ReviewsController(GOVAPIContext context) { _context = context; }
 
         // GET: api/Reviews
         [HttpGet]
@@ -32,11 +29,9 @@ namespace GOVAPI.Controllers
             {
                 lambdaExpression = DynamicExpressionParser.ParseLambda<Review, bool>(new ParsingConfig(), true, searchExpression);
             }
-            var queryableReviews = this._context.Review.AsQueryable();
-            if (lambdaExpression != null)
-            {
-                queryableReviews = queryableReviews.Where(lambdaExpression);
-            }
+            // this was changed VVVVVVVVV
+            var queryableReviews = this._context.Review.Include((r) => r.User).Include((r) => r.Product).AsQueryable();
+            if (lambdaExpression != null) {  queryableReviews = queryableReviews.Where(lambdaExpression); }
             return await queryableReviews.ToListAsync();
         }
 
@@ -46,10 +41,7 @@ namespace GOVAPI.Controllers
         {
             var review = await _context.Review.FindAsync(id);
 
-            if (review == null)
-            {
-                return NotFound();
-            }
+            if (review == null) {  return NotFound(); }
 
             return review;
         }
@@ -59,27 +51,15 @@ namespace GOVAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReview(int id, Review review)
         {
-            if (id != review.ID)
-            {
-                return BadRequest();
-            }
+            if (id != review.ID) { return BadRequest(); }
 
             _context.Entry(review).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
+            try  { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReviewExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!ReviewExists(id)) {  return NotFound(); }
+                else { throw; }
             }
 
             return NoContent();
@@ -101,10 +81,7 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> DeleteReview(int id)
         {
             var review = await _context.Review.FindAsync(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+            if (review == null) { return NotFound(); }
 
             _context.Review.Remove(review);
             await _context.SaveChangesAsync();
@@ -112,9 +89,6 @@ namespace GOVAPI.Controllers
             return NoContent();
         }
 
-        private bool ReviewExists(int id)
-        {
-            return _context.Review.Any(e => e.ID == id);
-        }
+        private bool ReviewExists(int id) { return _context.Review.Any(e => e.ID == id); }
     }
 }
