@@ -13,9 +13,9 @@ namespace GOVAPI.Models
         public string Description { get; set; }
         public int Score { get; set; }
         public string PRef { get; set; }
-        public int? ImageId { get; set; }  //this ? means it can also be a null value
-        public virtual Image Image { get; set; } // foreign key  this points to the image but is not used
-        public int? CategoryId { get; set; }
+        public int? ImageID { get; set; }  //this ? means it can also be a null value
+        public Image Image { get; set; } // foreign key  this points to the image but is not used
+        public int? CategoryID { get; set; }
         public Category Category { get; set; }
     }
 }

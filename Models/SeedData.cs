@@ -32,27 +32,55 @@ namespace GOVAPI.Models
                     Score = 30, Category = context.Category.Where(x => x.Name == "Electronics").SingleOrDefault()
                 };
 
-                if (!context.Product.Any()) { context.Product.Add(product1); }
+                Product product2 = new Product
+                {
+                    Name = "Samsung A51",
+                    ReleaseYear = 2020,
+                    Description = "Classic Samsung traits you do get in the Galaxy A51 include a bold AMOLED screen, and software that looks just like that of the Galaxy S21 series.",
+                    Score = 45,
+                    Category = context.Category.Where(x => x.Name == "Electronics").SingleOrDefault()
+                };
+
+                if (!context.Product.Any())
+                { 
+                    context.Product.Add(product1);
+                    context.Product.Add(product2);
+                }
                 
-                else { product1 = context.Product.Where(x => x.Name == "Iphone 5").SingleOrDefault(); }
+                else 
+                { 
+                    product1 = context.Product.Where(x => x.Name == "Iphone 5").SingleOrDefault();
+                    product2 = context.Product.Where(x => x.Name == "Samsung A51").SingleOrDefault();
+                }
 
-                User user1 = context.User.Where(x => x.Username == "user").SingleOrDefault();
+                User user1 = context.User.Where(x => x.Username == "admin").SingleOrDefault();
+                User user2 = context.User.Where(x => x.Username == "user").SingleOrDefault();
 
-                if (user1 == null)
+                if (user1 == null || user2 == null)
                 {
                     user1 = new User
                     {
-                        Username = "user", Email = "user@test.com",
+                        Username = "admin", Email = "admin@test.com",
                         Password = "$2a$04$EmGblUehqJ7P.MViswB39.SPtN/yjQAc6g9dcQVVMRQZWotGftdnO", 
                         ScoreTotal = 0, Admin = true
                     };
                     context.User.Add(user1);
+                    user2 = new User
+                    {
+                        Username = "user",
+                        Email = "user@test.com",
+                        Password = "$2a$04$EmGblUehqJ7P.MViswB39.SPtN/yjQAc6g9dcQVVMRQZWotGftdnO",
+                        ScoreTotal = 0,
+                        Admin = false
+                    };
+                    context.User.Add(user2);
                 }
 
                 if (!context.Review.Any())
                 {
                     context.Review.AddRange(
-                    new Review {  User = user1, Product = product1, Description = "This product is really good!", Visible = true });
+                    new Review {  User = user1, Product = product1, Description = "This product is really good!", Visible = true },
+                    new Review { User = user2, Product = product1, Description = "IIII HATE ITTTT!", Visible = true });
                 }
                 context.SaveChanges();
             }

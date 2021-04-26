@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GOVAPI.Migrations
 {
-    public partial class initialrelease : Migration
+    public partial class initialreleaese : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,13 +11,13 @@ namespace GOVAPI.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Category", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -27,7 +27,7 @@ namespace GOVAPI.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Information = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     TypeUsed = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateChanged = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -64,21 +64,21 @@ namespace GOVAPI.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Score = table.Column<int>(type: "int", nullable: false),
                     PRef = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageId = table.Column<int>(type: "int", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    ImageID = table.Column<int>(type: "int", nullable: true),
+                    CategoryID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Product_Category_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_Product_Category_CategoryID",
+                        column: x => x.CategoryID,
                         principalTable: "Category",
-                        principalColumn: "Id",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Product_Image_ImageId",
-                        column: x => x.ImageId,
+                        name: "FK_Product_Image_ImageID",
+                        column: x => x.ImageID,
                         principalTable: "Image",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
@@ -113,14 +113,14 @@ namespace GOVAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CategoryId",
+                name: "IX_Product_CategoryID",
                 table: "Product",
-                column: "CategoryId");
+                column: "CategoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ImageId",
+                name: "IX_Product_ImageID",
                 table: "Product",
-                column: "ImageId");
+                column: "ImageID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Review_ProductID",

@@ -10,14 +10,11 @@ namespace GOVAPI.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public byte[] Information { get; set; }
+        public byte[] Data { get; set; }
         public string TypeUsed { get; set; }
         public DateTime DateChanged { get; set; }
         public string Extension { get => Path.GetExtension(this.Name); }
         
-        public Image()
-        {
-            this.DateChanged = DateTime.Now;
-        }
+        public Image() {  this.DateChanged = DateTime.Now; }
     }
 }

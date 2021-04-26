@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GOVAPI.Migrations
 {
     [DbContext(typeof(GOVAPIContext))]
-    [Migration("20210315171816_initial-release")]
-    partial class initialrelease
+    [Migration("20210425201824_initial-releaese")]
+    partial class initialreleaese
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace GOVAPI.Migrations
 
             modelBuilder.Entity("GOVAPI.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -31,7 +31,7 @@ namespace GOVAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Category");
                 });
@@ -43,11 +43,11 @@ namespace GOVAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<DateTime>("DateChanged")
                         .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("Information")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -67,13 +67,13 @@ namespace GOVAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int?>("ImageID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -90,9 +90,9 @@ namespace GOVAPI.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryID");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("ImageID");
 
                     b.ToTable("Product");
                 });
@@ -156,11 +156,11 @@ namespace GOVAPI.Migrations
                 {
                     b.HasOne("GOVAPI.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryID");
 
                     b.HasOne("GOVAPI.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageID");
 
                     b.Navigation("Category");
 

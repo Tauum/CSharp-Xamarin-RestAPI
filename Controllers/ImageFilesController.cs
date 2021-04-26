@@ -87,7 +87,6 @@ namespace GOVAPI.Controllers
 
             return NoContent();
         }
-
         private bool ImageExists(int id) { return _context.Image.Any(e => e.ID == id); }
     }
 }
