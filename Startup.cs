@@ -34,7 +34,7 @@ namespace GOVAPI
             services.AddDbContext<GOVAPIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GOVAPIContext")));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) //configure HTTP request pipeline
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) //configure HTTP request pipeline // this can be modified for viewing injection from requests
         {
             if (env.IsDevelopment())
             {

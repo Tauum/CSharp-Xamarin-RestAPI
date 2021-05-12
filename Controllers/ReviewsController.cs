@@ -40,9 +40,7 @@ namespace GOVAPI.Controllers
         public async Task<ActionResult<Review>> GetReview(int id)
         {
             var review = await _context.Review.FindAsync(id);
-
             if (review == null) {  return NotFound(); }
-
             return review;
         }
 
@@ -52,16 +50,13 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutReview(int id, Review review)
         {
             if (id != review.ID) { return BadRequest(); }
-
             _context.Entry(review).State = EntityState.Modified;
-
             try  { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
                 if (!ReviewExists(id)) {  return NotFound(); }
                 else { throw; }
             }
-
             return NoContent();
         }
 
@@ -70,9 +65,10 @@ namespace GOVAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Review>> PostReview(Review review)
         {
+             //review.Product = null;
+           // review.User = null;
             _context.Review.Add(review);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetReview", new { id = review.ID }, review);
         }
 
@@ -82,10 +78,8 @@ namespace GOVAPI.Controllers
         {
             var review = await _context.Review.FindAsync(id);
             if (review == null) { return NotFound(); }
-
             _context.Review.Remove(review);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

@@ -27,7 +27,7 @@ namespace GOVAPI.Models
 
                 Product product1 = new Product
                 {
-                    Name = "Iphone 5", ReleaseYear = 1984,
+                    Name = "Iphone 5", ReleaseYear = 2012,
                     Description = "The iPhone 5 is a smartphone that was designed and marketed by Apple Inc. It is the sixth generation of the iPhone succeeding the iPhone 4S",
                     Score = 30, Category = context.Category.Where(x => x.Name == "Electronics").SingleOrDefault()
                 };
@@ -55,6 +55,7 @@ namespace GOVAPI.Models
 
                 User user1 = context.User.Where(x => x.Username == "admin").SingleOrDefault();
                 User user2 = context.User.Where(x => x.Username == "user").SingleOrDefault();
+                User user3 = context.User.Where(x => x.Username == "test").SingleOrDefault();
 
                 if (user1 == null || user2 == null)
                 {
@@ -74,12 +75,22 @@ namespace GOVAPI.Models
                         Admin = false
                     };
                     context.User.Add(user2);
+                    user3 = new User
+                    {
+                        Username = "test",
+                        Email = "test@test.com",
+                        Password = "$2a$04$EmGblUehqJ7P.MViswB39.SPtN/yjQAc6g9dcQVVMRQZWotGftdnO",
+                        ScoreTotal = 0,
+                        Admin = false
+                    };
+                    context.User.Add(user3);
                 }
 
                 if (!context.Review.Any())
                 {
                     context.Review.AddRange(
-                    new Review {  User = user1, Product = product1, Description = "This product is really good!", Visible = true },
+                    new Review {  User = user1, Product = product1, Description = "This product is really good!", Visible = false },
+                    new Review { User = user3, Product = product1, Description = "this is okay", Visible = true },
                     new Review { User = user2, Product = product1, Description = "IIII HATE ITTTT!", Visible = true });
                 }
                 context.SaveChanges();

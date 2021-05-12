@@ -15,7 +15,6 @@ namespace GOVAPI.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly GOVAPIContext _context;
-
         public CategoriesController(GOVAPIContext context) { _context = context; }
 
         // GET: api/Categories
@@ -27,9 +26,7 @@ namespace GOVAPI.Controllers
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
             var category = await _context.Category.FindAsync(id);
-
             if (category == null) {  return NotFound(); }
-
             return category;
         }
 
@@ -46,9 +43,7 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.ID) { return BadRequest(); }
-
             _context.Entry(category).State = EntityState.Modified;
-
             try { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
@@ -75,10 +70,8 @@ namespace GOVAPI.Controllers
         {
             var category = await _context.Category.FindAsync(id);
             if (category == null) {  return NotFound(); }
-
             _context.Category.Remove(category);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

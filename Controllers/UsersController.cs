@@ -18,23 +18,19 @@ namespace GOVAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly GOVAPIContext _context;
-
         public UsersController(GOVAPIContext context) { _context = context; }
 
         // GET: api/Users
-          [HttpGet]
-          public async Task<ActionResult<IEnumerable<User>>> GetUsers(string searchExpression = null) //this doesnt work
-          {
-              Expression<Func<User, bool>> lambdaExpression = null;
-              if (!string.IsNullOrWhiteSpace(searchExpression))
-              {
-                  lambdaExpression = DynamicExpressionParser.ParseLambda<User, bool>(new ParsingConfig(), true, searchExpression);
-              }
-              var queryableUser = this._context.User.AsQueryable();
-              if (lambdaExpression != null) {  queryableUser = queryableUser.Where(lambdaExpression); }
-              var list = await queryableUser.ToListAsync();
-              return list;
-          } 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers(string searchExpression = null) //this doesnt work
+        {
+            Expression<Func<User, bool>> lambdaExpression = null;
+            if (!string.IsNullOrWhiteSpace(searchExpression)) { lambdaExpression = DynamicExpressionParser.ParseLambda<User, bool>(new ParsingConfig(), true, searchExpression); }
+            var queryableUser = this._context.User.AsQueryable();
+            if (lambdaExpression != null) { queryableUser = queryableUser.Where(lambdaExpression); }
+            var list = await queryableUser.ToListAsync();
+            return list;
+        }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
@@ -50,10 +46,8 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.ID) { return BadRequest(); }
-
             _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-
-            try {  await _context.SaveChangesAsync(); }
+            try { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
                 if (!UserExists(id)) { return NotFound(); }
@@ -62,13 +56,12 @@ namespace GOVAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Users // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Users
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.User.Add(user);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetUser", new { id = user.ID }, user);
         }
 
@@ -78,10 +71,8 @@ namespace GOVAPI.Controllers
         {
             var user = await _context.User.FindAsync(id);
             if (user == null) { return NotFound(); }
-
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

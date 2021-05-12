@@ -25,10 +25,7 @@ namespace GOVAPI.Controllers
         public async Task<ActionResult<IEnumerable<Image>>> GetImage(string searchExpression = null)
         {
             Expression<Func<Image, bool>> lambdaExpression = null;
-            if (!string.IsNullOrWhiteSpace(searchExpression))
-            {
-                lambdaExpression = DynamicExpressionParser.ParseLambda<Image, bool>(new ParsingConfig(), true, searchExpression);
-            }
+            if (!string.IsNullOrWhiteSpace(searchExpression)) { lambdaExpression = DynamicExpressionParser.ParseLambda<Image, bool>(new ParsingConfig(), true, searchExpression); }
             var queryableImages = this._context.Image.AsQueryable();
             if (lambdaExpression != null) { queryableImages = queryableImages.Where(lambdaExpression); }
             return await queryableImages.ToListAsync();
@@ -40,9 +37,7 @@ namespace GOVAPI.Controllers
         public async Task<ActionResult<Image>> GetImage(int id)
         {
             var Image = await _context.Image.FindAsync(id);
-
             if (Image == null) { return NotFound(); }
-
             return Image;
         }
 
@@ -52,16 +47,13 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutImage(int id, Image Image)
         {
             if (id != Image.ID) { return BadRequest(); }
-
             _context.Entry(Image).State = EntityState.Modified;
-
-            try { await _context.SaveChangesAsync();}
+            try { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ImageExists(id)) { return NotFound();}
+                if (!ImageExists(id)) { return NotFound(); }
                 else { throw; }
             }
-
             return NoContent();
         }
 
@@ -81,10 +73,8 @@ namespace GOVAPI.Controllers
         {
             var Image = await _context.Image.FindAsync(id);
             if (Image == null) { return NotFound(); }
-
             _context.Image.Remove(Image);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
         private bool ImageExists(int id) { return _context.Image.Any(e => e.ID == id); }

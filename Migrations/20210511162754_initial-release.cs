@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GOVAPI.Migrations
 {
-    public partial class initialreleaese : Migration
+    public partial class initialrelease : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
