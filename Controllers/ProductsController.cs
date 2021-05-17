@@ -74,11 +74,10 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
             if (id != product.ID) { return BadRequest(); }
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             var existingProduct = await _context.Product.Include(x => x.Category).Where(x => x.ID == id).SingleOrDefaultAsync();
 
-            try { await _context.SaveChangesAsync(); }
-
+                try { await _context.SaveChangesAsync(); }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ProductExists(id)) { return NotFound(); }
@@ -95,6 +94,8 @@ namespace GOVAPI.Controllers
             if (product.Category != null) {  _context.Category.Attach(product.Category); }
             _context.Product.Add(product);
             await _context.SaveChangesAsync();
+
+            _context.Entry(product).State = EntityState.Detached;
             return CreatedAtAction("GetProduct", new { id = product.ID }, product);
         }
 

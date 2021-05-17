@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using GOVAPI.Data;
 using System;
 using System.Linq;
+using System.Collections.Generic;
+
 namespace GOVAPI.Models
 {
     public static class SeedData
@@ -63,7 +65,9 @@ namespace GOVAPI.Models
                     {
                         Username = "admin", Email = "admin@test.com",
                         Password = "$2a$04$EmGblUehqJ7P.MViswB39.SPtN/yjQAc6g9dcQVVMRQZWotGftdnO", 
-                        ScoreTotal = 0, Admin = true
+                        ScoreTotal = 0,
+                        Admin = true,
+                        UserProducts = new List<UserProduct>() { new UserProduct { Product = product1 } }
                     };
                     context.User.Add(user1);
                     user2 = new User
@@ -72,7 +76,8 @@ namespace GOVAPI.Models
                         Email = "user@test.com",
                         Password = "$2a$04$EmGblUehqJ7P.MViswB39.SPtN/yjQAc6g9dcQVVMRQZWotGftdnO",
                         ScoreTotal = 0,
-                        Admin = false
+                        Admin = false,
+                        UserProducts = new List<UserProduct>() { new UserProduct { Product = product1 } }
                     };
                     context.User.Add(user2);
                     user3 = new User
@@ -81,7 +86,8 @@ namespace GOVAPI.Models
                         Email = "test@test.com",
                         Password = "$2a$04$EmGblUehqJ7P.MViswB39.SPtN/yjQAc6g9dcQVVMRQZWotGftdnO",
                         ScoreTotal = 0,
-                        Admin = false
+                        Admin = false,
+                        UserProducts = new List<UserProduct>() { new UserProduct { Product = product1 } }
                     };
                     context.User.Add(user3);
                 }

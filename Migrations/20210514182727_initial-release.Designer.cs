@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GOVAPI.Migrations
 {
     [DbContext(typeof(GOVAPIContext))]
-    [Migration("20210511162754_initial-release")]
+    [Migration("20210514182727_initial-release")]
     partial class initialrelease
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,15 +141,34 @@ namespace GOVAPI.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ScoreTotal")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("GOVAPI.Models.UserProduct", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserProduct");
                 });
 
             modelBuilder.Entity("GOVAPI.Models.Product", b =>
@@ -186,9 +205,33 @@ namespace GOVAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("GOVAPI.Models.UserProduct", b =>
+                {
+                    b.HasOne("GOVAPI.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GOVAPI.Models.User", "User")
+                        .WithMany("UserProducts")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GOVAPI.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("GOVAPI.Models.User", b =>
+                {
+                    b.Navigation("UserProducts");
                 });
 #pragma warning restore 612, 618
         }

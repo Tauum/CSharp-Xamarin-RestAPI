@@ -14,7 +14,6 @@ namespace GOVAPI.Models
         public string TypeUsed { get; set; }
         public DateTime DateChanged { get; set; }
         public string Extension { get => Path.GetExtension(this.Name); }
-        
         public Image() {  this.DateChanged = DateTime.Now; }
     }
 }

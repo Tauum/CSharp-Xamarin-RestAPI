@@ -43,7 +43,7 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.ID) { return BadRequest(); }
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Entry(category).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             try { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
@@ -61,6 +61,7 @@ namespace GOVAPI.Controllers
         {
             _context.Category.Add(category);
             await _context.SaveChangesAsync();
+            _context.Entry(category).State = EntityState.Detached;
             return CreatedAtAction("GetCategory", new { id = category.ID }, category);
         }
 

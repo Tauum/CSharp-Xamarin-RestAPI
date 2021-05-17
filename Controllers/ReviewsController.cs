@@ -50,7 +50,8 @@ namespace GOVAPI.Controllers
         public async Task<IActionResult> PutReview(int id, Review review)
         {
             if (id != review.ID) { return BadRequest(); }
-            _context.Entry(review).State = EntityState.Modified;
+            // _context.Entry(review).State = EntityState.Modified;
+            _context.Update(review);
             try  { await _context.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException)
             {
@@ -65,10 +66,9 @@ namespace GOVAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Review>> PostReview(Review review)
         {
-             //review.Product = null;
-           // review.User = null;
             _context.Review.Add(review);
             await _context.SaveChangesAsync();
+            _context.Entry(review).State = EntityState.Detached;
             return CreatedAtAction("GetReview", new { id = review.ID }, review);
         }
 
